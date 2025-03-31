@@ -17,6 +17,9 @@
             <li><a href="#">Sản phẩm</a></li>
             <li><a href="about.html">Giới thiệu</a></li>
             <li><a href="contact.html">Liên hệ</a></li>
+            <h2>Sản phẩm</h2>
+<div id="productList"></div>
+
                 <section>
                     <h2>Sản phẩm nổi bật</h2>
                     <div class="product-container">
@@ -52,4 +55,84 @@
                         </div>
                     </div>
                 </section>
-                
+          <!-- Firebase SDK -->
+          <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+              apiKey: "AIzaSyCQorcpCVqrGVGPvCIGABazCuKRt-LlGYw",
+              authDomain: "kcagri-d4a97.firebaseapp.com",
+              databaseURL: "https://kcagri-d4a97-default-rtdb.asia-southeast1.firebasedatabase.app",
+              projectId: "kcagri-d4a97",
+              storageBucket: "kcagri-d4a97.firebasestorage.app",
+              messagingSenderId: "11384934991",
+              appId: "1:11384934991:web:87b237f26da3121c49903a"
+            };
+          
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app); // ✅ Thêm dòng này để khai báo `db`
+          </script>
+<script type="module">
+    import { ref, set } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+    
+    // Kiểm tra kết nối Firebase
+    const dbRef = ref(db, "test");
+    set(dbRef, { message: "Kết nối thành công!" })
+      .then(() => console.log("✅ Firebase hoạt động tốt!"))
+      .catch((error) => console.error("❌ Lỗi kết nối:", error));
+  </script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+
+  // Cấu hình Firebase (THAY bằng mã của bạn)
+  const firebaseConfig = {
+    apiKey: "AIzaSyCQorcpCVqrGVGPvCIGABazCuKRt-LlGYw",
+    authDomain: "kcagri-d4a97.firebaseapp.com",
+    databaseURL: "https://kcagri-d4a97-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "kcagri-d4a97",
+    storageBucket: "kcagri-d4a97.firebasestorage.app",
+    messagingSenderId: "11384934991",
+    appId: "1:11384934991:web:87b237f26da3121c49903a"
+  };
+
+
+    // Khởi tạo Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Lấy danh sách sản phẩm từ Firebase
+    function loadProducts() {
+        const productList = document.getElementById("productList");
+        const productsRef = ref(db, "products");
+
+        onValue(productsRef, (snapshot) => {
+            productList.innerHTML = ""; // Xóa danh sách cũ
+
+            snapshot.forEach((childSnapshot) => {
+                const product = childSnapshot.val();
+                const productItem = document.createElement("div");
+
+                productItem.innerHTML = `
+                    <div style="border: 1px solid #ddd; padding: 10px; margin: 10px; display: inline-block; text-align: center;">
+                        <img src="${product.image}" alt="${product.name}" style="width: 150px; height: 150px;"><br>
+                        <strong>${product.name}</strong><br>
+                        Giá: ${product.price} đ<br>
+                        <button>Mua ngay</button>
+                    </div>
+                `;
+
+                productList.appendChild(productItem);
+            });
+        });
+    }
+
+    loadProducts(); // Gọi hàm khi trang tải
+</script>
+
+                  

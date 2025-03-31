@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị sản phẩm - Kcagri</title>
+</head>
+<body>
+    <h2>Thêm sản phẩm mới</h2>
+    
+    <label>Tên sản phẩm:</label>
+    <input type="text" id="productName"><br>
+
+    <label>Giá:</label>
+    <input type="number" id="productPrice"><br>
+
+    <label>URL Ảnh:</label>
+    <input type="text" id="productImage"><br>
+
+    <button onclick="addProduct()">Thêm sản phẩm</button>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+
+        // Cấu hình Firebase (THAY bằng mã của bạn)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCQorcpCVqrGVGPvCIGABazCuKRt-LlGYw",
+    authDomain: "kcagri-d4a97.firebaseapp.com",
+    databaseURL: "https://kcagri-d4a97-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "kcagri-d4a97",
+    storageBucket: "kcagri-d4a97.firebasestorage.app",
+    messagingSenderId: "11384934991",
+    appId: "1:11384934991:web:87b237f26da3121c49903a"
+  };
+
+        
+
+        // Khởi tạo Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+         // ✅ SỬA LỖI: Gán hàm addProduct vào window
+         window.addProduct = function () {
+            const name = document.getElementById("productName").value;
+            const price = document.getElementById("productPrice").value;
+            const image = document.getElementById("productImage").value;
+
+            if (name === "" || price === "" || image === "") {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+
+            const newProductRef = push(ref(db, "products")); // Tạo ID tự động
+            set(newProductRef, { name, price, image })
+                .then(() => alert("✅ Thêm sản phẩm thành công!"))
+                .catch((error) => alert("❌ Lỗi: " + error));
+        };
+    </script>
+</body>
+</html>
