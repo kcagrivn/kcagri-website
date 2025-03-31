@@ -169,3 +169,25 @@ h2 {
 .about h2 {
     color: #28a745;
 }
+/* Hiệu ứng fade-in khi cuộn */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Áp dụng hiệu ứng cho tiêu đề, sản phẩm và nội dung trang */
+h2, .product, .about {
+    opacity: 0;
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+/* Delay hiệu ứng để từng phần xuất hiện dần */
+.product:nth-child(1) { animation-delay: 0.2s; }
+.product:nth-child(2) { animation-delay: 0.4s; }
+.product:nth-child(3) { animation-delay: 0.6s; }
